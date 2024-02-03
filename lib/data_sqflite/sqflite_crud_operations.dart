@@ -149,4 +149,6 @@ class DatabaseStudent {
       return 0;
     }
   }
+
+  DeleteStudentsById(String id) {}
 }

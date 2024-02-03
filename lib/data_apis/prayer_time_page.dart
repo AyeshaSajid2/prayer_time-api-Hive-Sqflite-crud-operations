@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 PrayerTime prayerTimeFromMap(String str) => PrayerTime.fromMap(json.decode(str));

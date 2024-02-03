@@ -48,7 +48,7 @@ class _ScreenAddRecordState extends State<ScreenAddRecord> {
                   id = value;
                   print("$id");
                 });
-              },
+              },decoration: InputDecoration(labelText: "Enter ID"),
             ),
             SizedBox(height: 20),
             TextField(
@@ -58,111 +58,114 @@ class _ScreenAddRecordState extends State<ScreenAddRecord> {
                   print("$name");
                 });
               },
+              decoration: InputDecoration(labelText: "Enter Name"),
             ),
             SizedBox(height: 20),
-            Column(
-              children: [
-                TextButton(onPressed: (){
-                  if (id.isNotEmpty) {
+            Scrollbar(
+              child: Column(
+                children: [
+                  TextButton(onPressed: (){
+                    if (id.isNotEmpty) {
+                      Modelstudent modelStudent =
+                      Modelstudent(id: int.parse(id), name: name);
+                      databaseStudent.UpdateStudent(modelStudent).then((value) {
+                        if (value) {
+                          print("Record updated Successfully");
+                        } else {
+                          print("Record updation failed");
+                        }
+                      });
+                    } else {
+                      print("Must fill the required id field");
+                    }
+                  },  child: Text("Update Record"),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+              )),
+                  SizedBox(height: 20,),
+                  TextButton(onPressed: () async {
                     Modelstudent modelStudent =
-                    Modelstudent(id: int.parse(id), name: name);
-                    databaseStudent.UpdateStudent(modelStudent).then((value) {
-                      if (value) {
-                        print("Record updated Successfully");
-                      } else {
-                        print("Record updation failed");
+                        Modelstudent(id: int.parse(id), name: name);
+
+                    bool isAdded = await databaseStudent.AddStudent(modelStudent);
+                    databaseStudent.AddStudent(modelStudent).then((isAdded){
+                      if(isAdded){
+                        print("Record Added Successfully");
+                      }else {
+                        print("Record insertion failed");
                       }
                     });
-                  } else {
-                    print("Must fill the required id field");
-                  }
-                },  child: Text("Update Record"),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-            )),
-                SizedBox(height: 20,),
-                TextButton(onPressed: () async {
-                  Modelstudent modelStudent =
-                      Modelstudent(id: int.parse(id), name: name);
+                  }, child: Text("Add Record"), style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+                  ),),
 
-                  bool isAdded = await databaseStudent.AddStudent(modelStudent);
-                  databaseStudent.AddStudent(modelStudent).then((isAdded){
-                    if(isAdded){
-                      print("Record Added Successfully");
-                    }else {
-                      print("Record insertion failed");
+
+                  SizedBox(height: 20,),
+                  TextButton(onPressed: (){
+                    if(id.isNotEmpty){
+                      // Modelstudent modelStudent =
+                      // Modelstudent(id: int.parse(id), name: name);
+                      databaseStudent.deleteStudentbyId(id).then((value){
+                        if(value){
+                          print("Deleted single record Successfully");
+                        }else {
+                          print("Record deletion failed");
+                        }
+                      });
                     }
-                  });
-                }, child: Text("Add Record"), style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-                ),),
+                    else{
+                      print("Must fill the required id field");
+                    }
+                  },  child: Text("Delete Single record"),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+                      )),
 
-
-                SizedBox(height: 20,),
-                TextButton(onPressed: (){
-                  if(id.isNotEmpty){
-                    // Modelstudent modelStudent =
-                    // Modelstudent(id: int.parse(id), name: name);
-                    databaseStudent.deleteStudentbyId(id).then((value){
-                      if(value){
-                        print("Deleted single record Successfully");
+                  SizedBox(height: 20,),
+                  TextButton(onPressed: () async {
+                    databaseStudent.DeleteAllStudent().then((isAdded){
+                      if(isAdded){
+                        print("Record Deletes Successfully");
                       }else {
                         print("Record deletion failed");
                       }
                     });
-                  }
-                  else{
-                    print("Must fill the required id field");
-                  }
-                },  child: Text("Delete Single record"),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-                    )),
+                  }, child: Text("Delete all Record"),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+                      )),
 
-                SizedBox(height: 20,),
-                TextButton(onPressed: () async {
-                  databaseStudent.DeleteAllStudent().then((isAdded){
-                    if(isAdded){
-                      print("Record Deletes Successfully");
-                    }else {
-                      print("Record deletion failed");
+
+                  SizedBox(height: 20,),
+                  TextButton(onPressed: (){
+                    if(id.isNotEmpty){
+                      Modelstudent modelStudent =
+                      Modelstudent(id: int.parse(id), name: name);
+                      databaseStudent.GetCountStudent().then((value){
+                        print("Total number of record = $value");
+                      });
                     }
-                  });
-                }, child: Text("Delete all Record"),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-                    )),
+                    else{
+                      print("Must fill the required id field");
+                    }
+                  }, child: Text("Count Record"),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+                      )),
 
-
-                SizedBox(height: 20,),
-                TextButton(onPressed: (){
-                  if(id.isNotEmpty){
-                    Modelstudent modelStudent =
-                    Modelstudent(id: int.parse(id), name: name);
-                    databaseStudent.GetCountStudent().then((value){
-                      print("Total number of record = $value");
+                  SizedBox(height: 20,),
+                  TextButton(onPressed: () async {
+                    databaseStudent.GetAllStudent().then((List<Modelstudent> List){
+                    List.forEach((element){
+                      print("id = ${element.id}, Name: ${element.name}" );
                     });
-                  }
-                  else{
-                    print("Must fill the required id field");
-                  }
-                }, child: Text("Count Record"),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-                    )),
-
-                SizedBox(height: 20,),
-                TextButton(onPressed: () async {
-                  databaseStudent.GetAllStudent().then((List<Modelstudent> List){
-                  List.forEach((element){
-                    print("id = ${element.id}, Name: ${element.name}" );
-                  });
-                  });
-                }, child: Text("Delete all Record"),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
-                    )),
-              ],
+                    });
+                  }, child: Text("Delete all Record"),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.amber),
+                      )),
+                ],
+              ),
             )
           ],
         ),
