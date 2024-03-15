@@ -56,7 +56,7 @@ class _ScreenDashboardState extends State<ScreenDashboard> {
                 Navigator.push(context, MaterialPageRoute(builder: (builder) => const HiveDashboardScreen()));
               }, child: const Text("Hive Dashboard"),
                 style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.cyan)),
-        ),),
+              ),),
               const SizedBox(height: 20,),
 
               SizedBox(width: 200, height: 40,
